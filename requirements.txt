@@ -1,0 +1,9 @@
+wheel
+
+QuantStats==0.0.56
+
+# WKHTMLTOPDF
+# https://www.geeksforgeeks.org/python-convert-html-pdf/
+pdfkit==1.0.0
+
+jupyter==1.0.0
