@@ -9,14 +9,14 @@ from Q_lib import calc_stats
 
 try:
     zorro_out_folder = sys.argv[1]
-    # zorro_out = "Data
+    # zorro_out = "Data"
 except:
     zorro_out_folder = "Data"
 
 
 # Start capital
 try:
-    init_capital = sys.argv[2]
+    init_capital = float(sys.argv[2])
 except:
     init_capital = 1000 * 1000
 

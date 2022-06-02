@@ -10,7 +10,7 @@ zorro_out = sys.argv[1]
 
 # Strategy start capital
 try:
-    init_capital = sys.argv[2]
+    init_capital = float(sys.argv[2])
 except:
     init_capital = 1000 * 1000
 
