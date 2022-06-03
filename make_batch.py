@@ -32,7 +32,11 @@ except:
 all_zoro_reports = glob(join(zorro_out_folder, '*.csv'))
 
 for item in all_zoro_reports:
-    calc_stats(item, init_capital, bmk_ticker)
+    try:
+        calc_stats(item, init_capital, bmk_ticker)
+    except:
+        print (f"\nOhh {item} - Fallito !!!\n")
+    
 
 
 
