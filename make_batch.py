@@ -2,7 +2,7 @@ import sys
 from glob    import glob
 from os.path import join
 
-from Q_lib import calc_stats
+from Q_lib import calc_stats, calc_sharpe
 
 # Create reports
 # https://opensourceoptions.com/blog/how-to-pass-arguments-to-a-python-script-from-the-command-line/
@@ -33,6 +33,9 @@ all_zoro_reports = glob(join(zorro_out_folder, '*.csv'))
 
 for item in all_zoro_reports:
     try:
+        tmp_sharpe = round(calc_sharpe(item, init_capital), 3)
+        print (f"\nSharpe - {tmp_sharpe} - ", end=" ")
+
         calc_stats(item, init_capital, bmk_ticker)
     except:
         print (f"\nOhh {item} - Fallito !!!\n")

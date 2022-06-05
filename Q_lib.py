@@ -17,15 +17,30 @@ def download_prices(ticker):
     return _yf.Ticker(ticker).history(**p)['Close']
 
 
+def get_strategy_data(pnl_file, capital):
+
+    df = pd.read_csv(pnl_file)
+    dfa = pd.DataFrame()
+    dfa["pnl_with_capital"]  = df["PnL"] + capital
+    dfa["ret"] =  dfa["pnl_with_capital"].pct_change()
+    dfa["Date"] = pd.to_datetime( df["Date"] ).apply(lambda d: d.date())
+    dfa = dfa.set_index( pd.DatetimeIndex( dfa["Date"] ) )
+
+    return (dfa)
+
+
+def calc_sharpe(pnl_file, capital):
+
+    df_analysis = get_strategy_data(pnl_file, capital)
+
+    sharpe = qs.stats.sharpe(df_analysis["ret"])
+
+    return ( sharpe  )
+
+
 def calc_stats(pnl_file, capital, bmk_ticker="BTC-USD", out_folder = "Reports"):
 
-    # Startegy
-    df_data = pd.read_csv(pnl_file)
-    df_analysis = pd.DataFrame()
-    df_analysis["pnl_with_capital"]  = df_data["PnL"] + capital
-    df_analysis["ret"] =  df_analysis["pnl_with_capital"].pct_change()
-    df_analysis["Date"] = pd.to_datetime( df_data["Date"] ).apply(lambda d: d.date())
-    df_analysis = df_analysis.set_index( pd.DatetimeIndex( df_analysis["Date"] ) )
+    df_analysis = get_strategy_data(pnl_file, capital)
     
     # Benchmark
     bmk = download_prices(bmk_ticker)
