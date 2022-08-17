@@ -17,9 +17,11 @@ def download_prices(ticker):
     return _yf.Ticker(ticker).history(**p)['Close']
 
 
-def get_strategy_data(pnl_file, capital):
+def get_strategy_data(pnl_file, capital, col_names=None):
 
     df = pd.read_csv(pnl_file)
+    if col_names is not None:
+        df.columns = col_names
     dfa = pd.DataFrame()
     dfa["pnl_with_capital"]  = df["PnL"] + capital
     dfa["ret"] =  dfa["pnl_with_capital"].pct_change()
@@ -33,7 +35,10 @@ def calc_sharpe(pnl_file, capital):
 
     df_analysis = get_strategy_data(pnl_file, capital)
 
-    sharpe = qs.stats.sharpe(df_analysis["ret"])
+    if df_analysis["ret"].std(ddof=1) == 0:
+        sharpe = None
+    else:
+        sharpe = qs.stats.sharpe(df_analysis["ret"])
 
     return ( sharpe  )
 
