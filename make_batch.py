@@ -33,7 +33,11 @@ all_zoro_reports = glob(join(zorro_out_folder, '*.csv'))
 
 for item in all_zoro_reports:
     try:
-        tmp_sharpe = round(calc_sharpe(item, init_capital), 3)
+        tmp_sharpe = calc_sharpe(item, init_capital)
+
+        if (tmp_sharpe is not None):
+            tmp_sharpe = round(tmp_sharpe, 3)
+         
         print (f"\nSharpe - {tmp_sharpe} - ", end=" ")
 
         calc_stats(item, init_capital, bmk_ticker)
