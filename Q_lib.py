@@ -17,7 +17,7 @@ def download_prices(ticker):
     return _yf.Ticker(ticker).history(**p)['Close']
 
 
-def get_strategy_data(pnl_file, capital, col_names=None):
+def get_strategy_data(pnl_file, capital, start_year=None, col_names=None):
 
     df = pd.read_csv(pnl_file)
     if col_names is not None:
@@ -26,14 +26,16 @@ def get_strategy_data(pnl_file, capital, col_names=None):
     dfa["pnl_with_capital"]  = df["PnL"] + capital
     dfa["ret"] =  dfa["pnl_with_capital"].pct_change()
     dfa["Date"] = pd.to_datetime( df["Date"] ).apply(lambda d: d.date())
+    if start_year is not None:
+        dfa = dfa.loc[dfa["Date"] >= pd.to_datetime(f'{start_year}-01-01', format='%Y-%m-%d').date()] 
     dfa = dfa.set_index( pd.DatetimeIndex( dfa["Date"] ) )
 
     return (dfa)
 
 
-def calc_sharpe(pnl_file, capital):
+def calc_sharpe(pnl_file, capital, start_year=None):
 
-    df_analysis = get_strategy_data(pnl_file, capital)
+    df_analysis = get_strategy_data(pnl_file, capital, start_year=start_year)
 
     if df_analysis["ret"].std(ddof=1) == 0:
         sharpe = None

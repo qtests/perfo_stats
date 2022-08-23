@@ -28,12 +28,19 @@ except:
     bmk_ticker = "BTC-USD"
 
 
+# Start year for Sharpe
+try:
+    start_year = sys.argv[4]
+except:
+    start_year = None
+
+
 # Get files and process
 all_zoro_reports = glob(join(zorro_out_folder, '*.csv'))
 
 for item in all_zoro_reports:
     try:
-        tmp_sharpe = calc_sharpe(item, init_capital)
+        tmp_sharpe = calc_sharpe(item, init_capital, start_year)
 
         if (tmp_sharpe is not None):
             tmp_sharpe = round(tmp_sharpe, 3)
