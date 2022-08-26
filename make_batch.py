@@ -43,7 +43,7 @@ for item in all_zoro_reports:
         tmp_sharpe = calc_sharpe(item, init_capital, start_year)
 
         if (tmp_sharpe is not None):
-            tmp_sharpe = round(tmp_sharpe, 3)
+            tmp_sharpe = round(tmp_sharpe, 5)
          
         print (f"\nSharpe - {tmp_sharpe} - ", end=" ")
 
