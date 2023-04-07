@@ -48,8 +48,8 @@ for item in all_zoro_reports:
         print (f"\nSharpe - {tmp_sharpe} - ", end=" ")
 
         calc_stats(item, init_capital, bmk_ticker)
-    except:
-        print (f"\nOhh {item} - Fallito !!!\n")
+    except Exception as e:
+        print (f"\nOhh {item} - {e} Fallito !!!\n")
     
 
 

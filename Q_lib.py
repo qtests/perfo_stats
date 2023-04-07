@@ -54,8 +54,8 @@ def calc_stats(pnl_file, capital, bmk_ticker="BTC-USD", out_folder = "Reports"):
     mask_bk = bmk.index.isin( df_analysis.index )
     bmk = bmk[mask_bk]
     
-    df_analysis["BMK"] = df_analysis.apply(lambda row: bmk[ pd.to_datetime(row.Date) ], axis=1)
-    df_analysis["BMK"] = df_analysis["BMK"].pct_change()
+    df_analysis["BMK"] = df_analysis.apply(lambda row: bmk[ pd.to_datetime(row.Date) ] if pd.to_datetime(row.Date) in bmk.index else None, axis=1)
+    df_analysis["BMK"] = df_analysis["BMK"].fillna(method='ffill').pct_change()
 
     # Output
     out_file = os.path.basename(pnl_file)[:-4] + "_tearsheet.html"
